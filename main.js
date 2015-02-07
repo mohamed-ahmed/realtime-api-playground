@@ -1,3 +1,6 @@
+var textArea1;
+var string;
+
 /**
      * This function is called the first time that the Realtime model is created
      * for a file. This function should be used to initialize any values of the
@@ -7,7 +10,7 @@
      * @param model {gapi.drive.realtime.Model} the Realtime root model object.
      */
     function initializeModel(model) {
-      var string = model.createString('Hello Realtime World!');
+      string = model.createString('Hello Realtime World!');
       model.getRoot().set('text', string);
     }
 
@@ -19,10 +22,10 @@
      * @param doc {gapi.drive.realtime.Document} the Realtime document.
      */
     function onFileLoaded(doc) {
-      var string = doc.getModel().getRoot().get('text');
+      string = doc.getModel().getRoot().get('text');
 
       // Keeping one box updated with a String binder.
-      var textArea1 = document.getElementById('editor1');
+      textArea1 = document.getElementById('editor1');
       gapi.drive.realtime.databinding.bindString(string, textArea1);
 
       // Keeping one box updated with a custom EventListener.
@@ -30,6 +33,9 @@
       var updateTextArea2 = function(e) {
       	console.log(e);
         textArea2.value = string;
+        if(editor.getValue() !== string.text){
+	        editor.setValue(string.text);
+	    }
       };
       string.addEventListener(gapi.drive.realtime.EventType.TEXT_INSERTED, updateTextArea2);
       string.addEventListener(gapi.drive.realtime.EventType.TEXT_DELETED, updateTextArea2);

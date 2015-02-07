@@ -8,4 +8,10 @@ window.onload = function(){
 	editor.getSession().setMode("ace/mode/javascript");
 	console.log("onload");
 
+	editor.session.on("change", function(e){
+		console.log(e);
+		string.setText(editor.getValue());
+	});
+
+
 }
