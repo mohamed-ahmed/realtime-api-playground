@@ -40,7 +40,7 @@ var globalModel;
 	        
 	    }
       }
-      globalModel.getRoot().addEventListener(gapi.drive.realtime.EventType.TEXT_INSERTED, valueChanged);
+      globalModel.getRoot().addEventListener(gapi.drive.realtime.EventType.OBJECT_CHANGED, valueChanged);
 
 
       // Keeping one box updated with a String binder.
