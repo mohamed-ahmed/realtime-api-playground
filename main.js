@@ -1,6 +1,7 @@
 var textArea1;
 var globalString;
 var globalModel;
+var typed = true;
 
 /**
      * This function is called the first time that the Realtime model is created
@@ -10,15 +11,15 @@ var globalModel;
      * Realtime World!', and is named 'text'.
      * @param model {gapi.drive.realtime.Model} the Realtime root model object.
      */
-    function initializeModel(model) {
-      var string = model.createString("hi");
-      console.log("hello ");
-      console.log(string);
-      globalString = string;
-      model.getRoot().set('text', string);
-      console.log(globalModel);
-      
-    }
+     function initializeModel(model) {
+     	var string = model.createString("hi");
+     	console.log("hello ");
+     	console.log(string);
+     	globalString = string;
+     	model.getRoot().set('text', string);
+     	console.log(globalModel);
+
+     }
 
     /**
      * This function is called when the Realtime file has been loaded. It should
@@ -27,20 +28,24 @@ var globalModel;
      * and bind it to our string model that we created in initializeModel.
      * @param doc {gapi.drive.realtime.Document} the Realtime document.
      */
-    function onFileLoaded(doc) {
-      var string = doc.getModel().getRoot().get('text');
-      globalModel = doc.getModel();
-      var valueChanged = function valueChanged(e){
-      	console.log(e);
-      	console.log("doc.getModel().getRoot().get('text'): ");
-        console.log(doc.getModel().getRoot().get('text'));
-      	if(editor.getValue() !== doc.getModel().getRoot().get('text')){
-	        editor.setValue(doc.getModel().getRoot().get('text'));
-	        editor.clearSelection();
-	        
-	    }
-      }
-      globalModel.getRoot().addEventListener(gapi.drive.realtime.EventType.OBJECT_CHANGED, valueChanged);
+     function onFileLoaded(doc) {
+     	var string = doc.getModel().getRoot().get('text');
+     	globalModel = doc.getModel();
+     	var valueChanged = function valueChanged(e){
+     		console.log(e);
+     		console.log("doc.getModel().getRoot().get('text'): ");
+     		console.log(doc.getModel().getRoot().get('text'));
+     		if(editor.getValue() !== doc.getModel().getRoot().get('text')){
+     			setTimeout(function(){
+     				typed = false;
+     				editor.setValue(doc.getModel().getRoot().get('text'));
+     				editor.clearSelection();
+     				typed = true;
+     			},0);
+
+     		}
+     	}
+     	globalModel.getRoot().addEventListener(gapi.drive.realtime.EventType.OBJECT_CHANGED, valueChanged);
 
 
       // Keeping one box updated with a String binder.
@@ -51,13 +56,13 @@ var globalModel;
       var textArea2 = document.getElementById('editor2');
       var updateTextArea2 = function(e) {
       	console.log(e);
-        textArea2.value = string;
-        
+      	textArea2.value = string;
+
       };
       //string.addEventListener(gapi.drive.realtime.EventType.TEXT_INSERTED, updateTextArea2);
       //string.addEventListener(gapi.drive.realtime.EventType.TEXT_DELETED, updateTextArea2);
       textArea2.onkeyup = function() {
-        string.setText(textArea2.value);
+      	string.setText(textArea2.value);
       };
       updateTextArea2();
 
@@ -74,48 +79,48 @@ var globalModel;
       var redoButton = document.getElementById('redoButton');
 
       undoButton.onclick = function(e) {
-        model.undo();
+      	model.undo();
       };
       redoButton.onclick = function(e) {
-        model.redo();
+      	model.redo();
       };
 
       // Add event handler for UndoRedoStateChanged events.
       var onUndoRedoStateChanged = function(e) {
-        undoButton.disabled = !e.canUndo;
-        redoButton.disabled = !e.canRedo;
+      	undoButton.disabled = !e.canUndo;
+      	redoButton.disabled = !e.canRedo;
       };
       model.addEventListener(gapi.drive.realtime.EventType.UNDO_REDO_STATE_CHANGED, onUndoRedoStateChanged);
-    }
+  }
 
     /**
      * Options for the Realtime loader.
      */
-    var realtimeOptions = {
+     var realtimeOptions = {
       /**
        * Client ID from the console.
        */
-      clientId: '154707636633-f72171c703qtaemqkss30ctgvfq1uf4p.apps.googleusercontent.com',
+       clientId: '154707636633-f72171c703qtaemqkss30ctgvfq1uf4p.apps.googleusercontent.com',
 
       /**
        * The ID of the button to click to authorize. Must be a DOM element ID.
        */
-      authButtonElementId: 'authorizeButton',
+       authButtonElementId: 'authorizeButton',
 
       /**
        * Function to be called when a Realtime model is first created.
        */
-      initializeModel: initializeModel,
+       initializeModel: initializeModel,
 
       /**
        * Autocreate files right after auth automatically.
        */
-      autoCreate: true,
+       autoCreate: true,
 
       /**
        * The name of newly created Drive files.
        */
-      defaultTitle: "New Realtime Quickstart File",
+       defaultTitle: "New Realtime Quickstart File",
 
       /**
        * The MIME type of newly created Drive Files. By default the application
@@ -127,7 +132,7 @@ var globalModel;
       /**
        * Function to be called every time a Realtime file is loaded.
        */
-      onFileLoaded: onFileLoaded,
+       onFileLoaded: onFileLoaded,
 
       /**
        * Function to be called to inityalize custom Collaborative Objects types.
@@ -138,12 +143,12 @@ var globalModel;
        * Function to be called after authorization and before loading files.
        */
       afterAuth: null // No action.
-    }
+  }
 
     /**
      * Start the Realtime loader with the options.
      */
-    function startRealtime() {
-      var realtimeLoader = new rtclient.RealtimeLoader(realtimeOptions);
-      realtimeLoader.start();
-    }
+     function startRealtime() {
+     	var realtimeLoader = new rtclient.RealtimeLoader(realtimeOptions);
+     	realtimeLoader.start();
+     }
