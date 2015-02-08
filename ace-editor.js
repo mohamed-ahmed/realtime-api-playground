@@ -10,8 +10,8 @@ window.onload = function(){
 
 	editor.session.on("change", function(e){
 		console.log(e);
-		string.setText(editor.getValue());
+		if(globalModel.getRoot().get('text') !== editor.getValue() ) {
+			globalModel.getRoot().set('text', editor.getValue() );
+		}
 	});
-
-
 }
