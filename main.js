@@ -31,17 +31,17 @@ var typed = true;
      function onFileLoaded(doc) {
      	var string = doc.getModel().getRoot().get('text');
      	globalModel = doc.getModel();
+      editor.setValue(doc.getModel().getRoot().get('text'));
+      editor.clearSelection();
      	var valueChanged = function valueChanged(e){
      		console.log(e);
      		console.log("doc.getModel().getRoot().get('text'): ");
      		console.log(doc.getModel().getRoot().get('text'));
      		if(editor.getValue() !== doc.getModel().getRoot().get('text')){
-     			setTimeout(function(){
      				typed = false;
      				editor.setValue(doc.getModel().getRoot().get('text'));
      				editor.clearSelection();
      				typed = true;
-     			},0);
 
      		}
      	}
@@ -142,7 +142,9 @@ var typed = true;
       /**
        * Function to be called after authorization and before loading files.
        */
-      afterAuth: null // No action.
+      afterAuth: null, // No action.
+
+      fileIds : '0B4UA5fSDA_1mcWFHSTN3SThSek0'
   }
 
     /**
