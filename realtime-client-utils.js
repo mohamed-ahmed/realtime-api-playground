@@ -389,11 +389,38 @@ rtclient.RealtimeLoader.prototype.createNewFileAndRedirect = function() {
   rtclient.createRealtimeFile(this.defaultTitle, this.newFileMimeType, function(file) {
     if (file.id) {
       _this.redirectTo([file.id], _this.authorizer.userId);
+      console.log("file:" );
+      console.log(file);
+      insertPermission(file.id, null, 'anyone', 'writer')
     }
     // File failed to be created, log why and do not attempt to redirect.
     else {
       console.error('Error creating file.');
       console.error(file);
     }
+  });
+}
+
+/**
+ * Insert a new permission.
+ *
+ * @param {String} fileId ID of the file to insert permission for.
+ * @param {String} value User or group e-mail address, domain name or
+ *                       {@code null} "default" type.
+ * @param {String} type The value "user", "group", "domain" or "default".
+ * @param {String} role The value "owner", "writer" or "reader".
+ */
+function insertPermission(fileId, value, type, role) {
+  var body = {
+    'value': value,
+    'type': type,
+    'role': role
+  };
+  var request = gapi.client.drive.permissions.insert({
+    'fileId': fileId,
+    'resource': body
+  });
+  request.execute(function(resp) { 
+    console.log(resp);
   });
 }
