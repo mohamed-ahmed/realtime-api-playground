@@ -341,7 +341,11 @@ rtclient.RealtimeLoader.prototype.handleErrors = function(e) {
  * parameters.
  */
 rtclient.RealtimeLoader.prototype.load = function() {
-  var fileIds = rtclient.params['fileIds'];
+  //var fileIds = rtclient.params['fileIds'];
+  //hardcoded following line to test loading the same file every time
+  var fileIds = "0B4UA5fSDA_1meURqeFhxb0MzX0U";
+  console.log("fileIds: ");
+  console.log(fileIds);
   if (fileIds) {
     fileIds = fileIds.split(',');
   }
